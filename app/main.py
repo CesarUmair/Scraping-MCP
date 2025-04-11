@@ -46,9 +46,20 @@ async def health_check():
     """Health check endpoint."""
     return {"status": "healthy"}
 
-# Include routers from other modules
-# from app.api.endpoints import router as api_router
-# app.include_router(api_router)
+# Include API router
+from app.api.api import api_router
+app.include_router(api_router, prefix="/api")
+
+# Include documentation customization
+@app.on_event("startup")
+async def startup_event():
+    """Startup event handler."""
+    logger.info("Starting up MCP Server...")
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    """Shutdown event handler."""
+    logger.info("Shutting down MCP Server...")
 
 if __name__ == "__main__":
     import uvicorn
